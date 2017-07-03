@@ -59,18 +59,18 @@ function plugin_escalade_install() {
    if (! TableExists('glpi_plugin_escalade_configs')) {
       $query = "CREATE TABLE `glpi_plugin_escalade_configs` (
          `id`                                      INT(11) NOT NULL AUTO_INCREMENT,
-         `remove_group`                            INT(11) NOT NULL,
-         `show_history`                            INT(11) NOT NULL,
-         `task_history`                            INT(11) NOT NULL,
-         `remove_tech`                             INT(11) NOT NULL,
-         `solve_return_group`                      INT(11) NOT NULL,
-         `reassign_group_from_cat`                 INT(11) NOT NULL,
-         `reassign_tech_from_cat`                  INT(11) NOT NULL,
-         `cloneandlink_ticket`                     INT(11) NOT NULL,
-         `close_linkedtickets`                     INT(11) NOT NULL,
-         `use_assign_user_group`                   INT(11) NOT NULL,
-         `use_assign_user_group_creation`          INT(11) NOT NULL,
-         `use_assign_user_group_modification`      INT(11) NOT NULL,
+         `remove_group`                            TINYINT(1) NOT NULL DEFAULT 1,
+         `show_history`                            TINYINT(1) NOT NULL DEFAULT 1,
+         `task_history`                            TINYINT(1) NOT NULL DEFAULT 1,
+         `remove_tech`                             TINYINT(1) NOT NULL DEFAULT 1,
+         `solve_return_group`                      TINYINT(1) NOT NULL DEFAULT 0,
+         `reassign_group_from_cat`                 TINYINT(1) NOT NULL DEFAULT 1,
+         `reassign_tech_from_cat`                  TINYINT(1) NOT NULL DEFAULT 1,
+         `cloneandlink_ticket`                     TINYINT(1) NOT NULL DEFAULT 1,
+         `close_linkedtickets`                     TINYINT(1) NOT NULL DEFAULT 1,
+         `use_assign_user_group`                   TINYINT(1) NOT NULL DEFAULT 0,
+         `use_assign_user_group_creation`          TINYINT(1) NOT NULL DEFAULT 0,
+         `use_assign_user_group_modification`      TINYINT(1) NOT NULL DEFAULT 0,
          `remove_delete_requester_user_btn`        TINYINT(1) NOT NULL DEFAULT 1,
          `remove_delete_watcher_user_btn`          TINYINT(1) NOT NULL DEFAULT 1,
          `remove_delete_assign_user_btn`           TINYINT(1) NOT NULL DEFAULT 0,
@@ -78,14 +78,13 @@ function plugin_escalade_install() {
          `remove_delete_watcher_group_btn`         TINYINT(1) NOT NULL DEFAULT 1,
          `remove_delete_assign_group_btn`          TINYINT(1) NOT NULL DEFAULT 0,
          `remove_delete_assign_supplier_btn`       TINYINT(1) NOT NULL DEFAULT 1,
-         `use_filter_assign_group`                 INT(11) NOT NULL,
-         `ticket_last_status`                      INT(11) NOT NULL,
+         `use_filter_assign_group`                 INT(11) NOT NULL DEFAULT 0,
+         `ticket_last_status`                      INT(11) NOT NULL DEFAULT -1,
          PRIMARY KEY (`id`)
       ) ENGINE = MYISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;";
       $DB->query($query);
 
-      $query = "INSERT INTO glpi_plugin_escalade_configs
-      VALUES (NULL, 1, 0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, '".Ticket::WAITING."')";
+      $query = "INSERT INTO glpi_plugin_escalade_configs (`id`) VALUES (1);";
       $DB->query($query);
    }
 
